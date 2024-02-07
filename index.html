@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ചിലവ്</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045);
+            color: rgb(79 59 58);
+        }
+
+        .card-container {
+            margin-top: 50px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        #otherName {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container card-container">
+        <div class="card">
+            <div style="text-align:center">
+                <h2>ചിലവ്</h2>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form id="submit-form" action="">
+                        <div class="form-group">
+                            <label for="Name">പേര്</label>
+                            <select class="form-control" id="Name" name="Name of Expense Submiter" required="">
+                                <option value="NIZAMI">നിങ്ങളുടെ പേര് തിരഞ്ഞെടുക്കുക</option>
+                                <option value="NIZAMI">ഇസ്മയിൽ നിസാമി</option>
+                                <option value="FASAL THANGAL">ഫസൽ തങ്ങൾ</option>
+                                <option value="OTHER">ഇതരം</option>
+                            </select>
+                            <input type="text" class="form-control" id="otherName" name="OtherName" placeholder="Enter specific name">
+                        </div>
+                        <div class="form-group">
+                            <label for="Subject">വിവരണം</label>
+                            <input type="text" placeholder="കാരണം" name="കാരണം" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="Amount">കാഷ്</label>
+                            <input type="number" class="form-control" id="amount" name="Expense amount" placeholder="Amount" required="">
+                        </div>
+                        <div id="loading-text" style="display: none; text-align: center;">
+                            <p>Loading...</p>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Submit" id="submit-btn">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#Name").change(function () {
+                if ($(this).val() === "OTHER") {
+                    $("#otherName").show();
+                } else {
+                    $("#otherName").hide();
+                }
+            });
+
+            $("#submit-form").submit((e) => {
+                e.preventDefault();
+                $("#submit-btn").hide();
+                $("#loading-text").show();
+                $.ajax({
+                    url: "https://script.google.com/macros/s/AKfycbxdLZYebSGyygU9HtTItKoPVG0-6lE79dCTFCwcunQ1ykkM7EqAI0ak8OceTAhyVdjhbQ/exec",
+                    data: $("#submit-form").serialize(),
+                    method: "post",
+                    success: function (response) {
+                        alert("Form submitted successfully");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    },
+                    error: function (err) {
+                        alert("Something went wrong");
+                        $("#submit-btn").show();
+                        $("#loading-text").hide();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
